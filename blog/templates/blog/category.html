@@ -1,0 +1,115 @@
+{% extends "blog/base.html" %}
+
+{% block navbar-brand %}
+({{ category.title }})
+{% endblock %}
+
+{% block content %}
+<div class="row">
+
+    <!-- Post Content Column -->
+    <div class="col-lg-8">
+        {% for object in object_list %}
+
+            <!-- Title -->
+            <h1 class="mt-4">{{ object.title }}</h1>
+
+            <!-- Author -->
+            <p class="lead">by {{ object.author }}</p>
+
+            <!-- Date/Time -->
+            <p>Posted on {{ object.date }} ({{ object.category.title }})</p>
+
+            <hr>
+
+            {% comment %}
+                <!-- Preview Image -->
+                <img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">
+                <hr>
+            {% endcomment %}
+
+            <!-- Post Content -->
+            {{ object.content |safe}}
+
+            <hr>
+
+            <!-- Comments Form -->
+            {% comment %}
+                <div class="card my-4">
+                    <h5 class="card-header">Leave a Comment:</h5>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            {% endcomment %}
+
+            {% for comment in object.comment_set.all %}
+
+                <!-- Single Comment -->
+                <div class="media mb-4">
+                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                    <div class="media-body">
+                        <h5 class="mt-0">{{ comment.author }}</h5>
+                        {{ comment.content }}
+                    </div>
+                </div>
+            {% endfor %}
+
+        {% endfor %}
+
+    </div>
+
+    <!-- Sidebar Widgets Column -->
+    <div class="col-md-4">
+
+        {% comment %}
+            <!-- Search Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Search</h5>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-secondary" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        {% endcomment %}
+
+        <!-- Categories Widget -->
+        <div class="card my-4">
+            <h5 class="card-header">Categories</h5>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="list-unstyled mb-0">
+                            {% for category in category_list %}
+                                <li>
+                                    <a href="{{ category.get_absolute_url }}">{{ category.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Side Widget -->
+        <div class="card my-4">
+            <h5 class="card-header">Side Widget</h5>
+            <div class="card-body">
+                Hi! This is me.
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.row -->
+
+
+{% endblock %}
